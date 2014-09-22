@@ -8,7 +8,7 @@
     function showLoading(msg) {
         var msg = msg || "";
         
-        kendo.mobile.application.changeLoadingMessage("<h1>" + msg + "</h1>");
+        kendo.mobile.application.changeLoadingMessage(msg);
         kendo.mobile.application.showLoading();
     }
     

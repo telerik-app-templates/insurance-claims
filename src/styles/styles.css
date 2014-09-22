@@ -44,8 +44,8 @@
 }
 
 /* form styles */
-.ds-form {
-    margin: 1em .65em;
+.signin-view .ds-form {
+    margin: 1em 1.2em;
     text-align: center;
 }
 
@@ -90,8 +90,7 @@
 
 .km-ios7 .km-view .km-button.ds-button,
 .km-ios7 .km-view .km-content input.ds-input {
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    border-radius: 2px;
     background-image: none;
 }
 
@@ -101,9 +100,15 @@
     padding: .2em .4em;
     border: 0;
     background-color: #F58220;
+	border: 1px solid transparent;
     color: #fff;
     text-decoration: none;
     font: 2em normal "HelveticaNeue Ultra Light", "Roboto Light", "Slate Light", "Segoe WP", NokiaPureTextLight, sans-serif;
+}
+
+.km-ios7 .km-view .ds-button .km-text
+{
+	color: inherit;
 }
 
 .km-ios7.km-horizontal .km-content input.ds-input {
@@ -115,25 +120,30 @@
 	padding: 0 .4em .1em;
 }
 
-.km-ios7 .km-view .km-button.ds-button.km-state-hover {
-    background-color: #4db07f;
-}
-
-.km-ios7 .km-view .km-button.ds-button.km-state-active {
-    background-color: #1e7449;
-}
-
-.km-ios7 .km-view .km-button.ds-button.km-state-disabled {
-    background-color: #81c342;
-}
-
 .km-ios7 .km-view .km-button.ds-button.ds-button-logout {
     margin-top: 1em;
     border-color: #93180f;
     background-color: #cd2f23;
 }
 
-.km-ios7 .km-view .km-button.ds-button.ds-button-large {
+.km-ios7 .km-view .km-content .ds-button-decline
+{
+	background: none;
+	color: #F58220;
+	border-color: currentcolor;
+}
+
+.km-ios7 .km-view .ds-button.km-state-active
+{
+	box-shadow: inset 0 0 300px rgba(0,0,0,.2);
+}
+
+.km-ios7 .km-view .ds-button-decline.km-state-active
+{
+	box-shadow: inset 0 0 300px rgba(245,130,32,.2);
+}
+
+.km-ios7 .km-view .ds-button.ds-button-large {
     width: 100%;
 }
 
@@ -407,17 +417,25 @@
 }
 
 /* Detail box */
-.ds-detail-container 
+.km-ios7 .km-view .km-content .ds-button-add:before
 {
-	position: absolute;
-	max-height: 80%;
-	bottom: 1em;
-	left: 1em;
-	right: 1em;
-	border: 1px solid #eee;
-	box-shadow: 0 0 2em #aaa;
-	-webkit-box-shadow: 0 0 2em #aaa;
-	background: #fff;
+	content: "\a0";
+	display: inline-block;
+	height: 100%;
+	width: 0;
+	vertical-align: middle;
+}
+
+.km-ios7 .km-view .km-content .ds-button-add .km-icon,
+.km-ios7 .km-view .km-content .ds-button-add .km-text
+{
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.km-ios7 .km-view .km-content .ds-button-add .km-icon
+{
+	margin-top: -0.3em;
 }
 
 .km-ios7 .km-view .km-content .ds-button-add
@@ -427,15 +445,36 @@
 	margin: 0;
 	position: absolute;
 	width: 100%;
+	left: 0;
 	top: -2em;
-	height: 6.6em;
-	line-height: 7.6em;
+	bottom: -2em;
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,0) 70%, rgba(255,255,255,1) 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(70%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0) 70%,rgba(255,255,255,1) 100%);
+	background-image: -ms-linear-gradient(top, rgba(255,255,255,0) 70%,rgba(255,255,255,1) 100%);
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0) 70%,rgba(255,255,255,1) 100%);
+	border-bottom: 0;
+    padding-bottom: 1em;
+}
+
+.km-ios7 .km-view .km-content .ds-button-approve,
+.km-ios7 .km-view .km-content .ds-button-decline
+{
+	width: 49%;
+}
+
+.km-ios7 .km-view .km-content .ds-button-large,
+.km-ios7 .km-view .km-content .ds-button-submit,
+.km-ios7 .km-view .km-content .ds-button-approve,
+.km-ios7 .km-view .km-content .ds-button-decline
+{
+	padding: .4em;
 }
 
 .ds-item-wrp
 {
 	display: block;
-	padding: .2em 0 .2em .4em;
+	padding: .2em 0 .4em .4em;
 }
 
 .ds-item-wrp.ds-btn
@@ -458,6 +497,46 @@
 	display: block;
 	margin-right: .4em;
 	margin-top: .3em;
+}
+
+.ds-item-wrp span.ds-value
+{
+	color: #333;
+	font-weight: bold;
+}
+
+.ds-item-wrp span.ds-description
+{
+	font-weight: normal;
+}
+
+.ds-item-wrp span.ds-title-value
+{
+	font-size: 1.4em;
+	font-weight: normal;
+}
+
+.ds-status,
+.ds-description
+{
+	font-size: .9em;
+}
+
+.ds-detail-items .ds-item-wrp .ds-value:after
+{
+	content: "\a0";
+	width: 0;
+}
+
+.ds-item-wrp .ds-amount
+{
+	font-size: 1.2em;
+}
+
+.ds-item-wrp .ds-amount:before,
+.ds-item-content-wrp .ds-value:before
+{
+	content: "$ ";
 }
 
 .km-root .km-ios7 .km-view div.ds-value .ds-input
@@ -485,4 +564,55 @@
 .km-ios7 .ds-detail-container .ds-button .ds-icon
 {
 	overflow: visible;
+}
+
+.ds-top-container 
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100px;
+	width: 100%;
+}
+
+.ds-detail-container 
+{
+	position: absolute;
+	max-height: 80%;
+	bottom: 1em;
+	left: 1em;
+	right: 1em;
+	border: 1px solid #eee;
+	box-shadow: 0 0 2em #aaa;
+	-webkit-box-shadow: 0 0 2em #aaa;
+	background: #fff;
+}
+
+.ds-item-content-wrp
+{
+    margin-left: 3.5em;
+    overflow: hidden;
+    display: block;
+}
+
+.ds-item-content-wrp .ds-title
+{
+    font-size: 1.1em;
+}
+
+.ds-item-content-wrp .ds-value
+{
+    display: block;
+}
+
+.ds-item-thumb
+{
+    background: transparent url("images/background-main.png") 50% 50% no-repeat;
+    height: 4.2em;
+    width: 4.2em;
+    position: absolute;
+    background-size: 130%;
+    border-radius: 0;
+    top: 0;
+    left: 0;
 }

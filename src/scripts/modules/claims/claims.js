@@ -11,7 +11,8 @@
         Title: "",
         Status: "",
         Amount: 0,
-        Photo: "//:0",
+        Photo: "",
+        Attachments: false,
 
         init: function (item) {
             var that = this;
@@ -20,6 +21,7 @@
             that.Title = item.Title;
             that.Status = item.Status;
             that.Amount = item.Amount;
+            that.Attachments = item.Attachments;
             kendo.data.ObservableObject.fn.init.apply(that, that);
         },
     });
@@ -27,6 +29,7 @@
     claimsViewModel = kendo.data.ObservableObject.extend({
         viewId: "#claims-view",
         claimsDataSource: null,
+        claims: [],
 
         init: function () {
             var that = this;
@@ -75,6 +78,7 @@
             
             app.common.showLoading();
             that.viewModel.$view = $(that.viewModel.viewId);
+            that.viewModel.set("claims",[]);
             that.getclaimsData();
         },
 
@@ -86,18 +90,34 @@
 
         storeclaims: function (data) {
             var that = this,
-                newclaim,
-                ds = [];
+                newclaim;
 
             for (var i = 0; i < data.d.results.length; i++) {
                 newclaim = new claim(data.d.results[i]);
-                ds.push(newclaim);
+                console.log(newclaim.Status);
+                console.log(that.status);
+                if(newclaim.Status == that.status && newclaim.Attachments){
+                    app.sharepointService.getAttachmentByListItemId ("Claims",newclaim.ID, $.proxy(that.setPhoto, that, newclaim),  $.proxy(that.onError, that));
+                }
+                else{
+                    this.viewModel.get("claims").push(newclaim);
+                }
             }
-
-            that.viewModel.get("claimsDataSource").data(ds);
-            that.viewModel.get("claimsDataSource").filter({ field: "Status",value: that.status,operator: "startswith" });
+            
+            that.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
+            that.viewModel.get("claimsDataSource").filter({ field: "Status",value: that.status, operator: "startswith" });
             app.common.hideLoading();
         },
+        
+        setPhoto : function(claim, blob){
+            var url = window.URL || window.webkitURL;
+            var imgSrc = url.createObjectURL(blob);
+            
+            claim.Photo = "url(" + imgSrc + ")";
+            this.viewModel.get("claims").push(claim);
+            this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
+        },
+        
          _onError: function (provider, e) {
             app.common.hideLoading();
             app.common.notification("Error loading claims list", JSON.stringify(e));

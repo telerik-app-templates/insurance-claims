@@ -50,6 +50,7 @@
 			    	$(element)
 			        	.css("height", 0)
 			        	.css("height", element.scrollHeight);
+        			$(".ds-add-items .ds-top-container").height($(".ds-add-items").height() - $(".ds-add-items .ds-detail-container").height());
 			    },
 				txarea = $(".ds-detail-container  textarea");
             
@@ -114,6 +115,10 @@
             
             that.viewModel.$view = $(that.viewModel.viewId);
         },
+        
+        adjustDimensions: function() {
+			$(".ds-add-items .ds-top-container").height($(".ds-add-items").height() - $(".ds-add-items .ds-detail-container").height());
+        }
 
        
 	});

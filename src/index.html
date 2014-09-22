@@ -46,10 +46,10 @@
                 </div>
             </div>
             <div data-role="tabstrip">
-                <a href="scripts/modules/claims/claims.html?status=registered">Registered</a>
-                <a href="scripts/modules/claims/claims.html?status=submitted">Submitted</a>
-                <a href="scripts/modules/claims/claims.html?status=approved">Approved</a>
-                <a href="scripts/modules/claims/claims.html?status=declined">Declined</a>
+                <a href="scripts/modules/claims/claims.html?status=Registered">Registered</a>
+                <a href="scripts/modules/claims/claims.html?status=Submitted">Submitted</a>
+                <a href="scripts/modules/claims/claims.html?status=Approved">Approved</a>
+                <a href="scripts/modules/claims/claims.html?status=Declined">Declined</a>
             </div>
             <ul class="claims-items"
                 data-role="listview"
@@ -58,10 +58,16 @@
             </ul>
 
             <script id="claims-template" type="text/x-kendo-tmpl">
-                <a class="cf" href="scripts/modules/claims/claim-details.html?dataId=#: ID #">
-                    <span class="ds-item-content-wrp"> <span class="ds-title">#: Title #</span> </span>
-                    <span class="ds-item-content-wrp" data-bind="visible: Approved"> <span style="color:green; float: right">YES</span> </span>
-                </a>
+            	<a class="cf" href="scripts/modules/claims/claim-details.html?dataId=#: ID #">
+                    <span class="ds-item-thumb" style="background-image: #: Photo #"></span>
+                	<span class="ds-item-content-wrp">
+                        <span class="ds-title">#: Title #</span>
+                        <span class="ds-value">#: Amount #</span>
+                    </span>
+                	<!--span class="ds-item-content-wrp" data-bind="visible: Approved">
+                        <span style="color:green; float: right">YES</span>        		
+                    </span-->
+            	</a>
             </script>
                 
         </div>

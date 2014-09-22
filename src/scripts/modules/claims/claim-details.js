@@ -1,6 +1,11 @@
 (function (global) {
 	var claimDetailsViewModel,
 		claimDetailsService,
+        colors = {
+           Approved: "#4AAD4D",
+           Submitted: "#F5913B",
+           Declined: "#E4400C"
+        },
         app = global.app = global.app || {};
 
 	claimDetailsViewModel = kendo.data.ObservableObject.extend({
@@ -128,12 +133,15 @@
                 that.viewModel.set("isAdmin", false);
             }
             that.viewModel.set("Attachments", claimData.Attachments);
+            that.viewModel.set("StatusColor", colors[claimData.Status]);
             if(!claimData.Attachments){
     			app.common.hideLoading();                 
             }
             else {
                 app.sharepointService.getAttachmentByListItemId ("Claims",claimData.ID, $.proxy(that.setPhoto, that),  $.proxy(that.onError, that));
             }
+			
+			$(".ds-detail-items .ds-top-container").height($(".ds-detail-items").outerHeight() - $(".ds-detail-items .ds-detail-container").height());
 		},
         setPhoto : function(blob){
             var url = window.URL || window.webkitURL;

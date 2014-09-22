@@ -15,25 +15,24 @@
         </div>
     </div>
 
-    <div class="bill-details-items">
-		<a class="ds-button ds-button-add" data-icon="camera" data-role="button" data-bind="click: onAddPhotoClick, invisible: Attachments">Add photo</a>
-        <img class="ds-button-add" data-bind="visible: Attachments, attr: { src: Photo }" width='300px'/> 
-		<div class="ds-detail-container" data-role="scroller">
-	        <span class="ds-item-wrp ds-item-right ds-item-has-icon"><span class="ds-title">Title</span><span class="ds-value" data-bind="text: Title"></span></span>
-	        <span class="ds-item-wrp"><span class="ds-title">Description</span> <span class="ds-value" data-bind="text: Description"></span></span>
-	        <span class="ds-item-wrp"><span class="ds-title">Status</span> <span class="ds-value" data-bind="text: Status"></span></span>
-	        <span class="ds-item-wrp"><span class="ds-title">Location</span> <span class="ds-value" data-bind="text: Location"></span></span>
-	        <span class="ds-item-wrp"><span class="ds-title">Amount</span> <span class="ds-value" data-bind="text: Amount"></span></span>
-            <span class="ds-item-wrp ds-btn"><a class="ds-button ds-button-large ds-button-submit" data-icon="action" data-role="button" data-bind="click: onSubmitForApprovalClick, visible: isStatusRegistered">Submit for approval</a></span>
-            <span class="ds-item-wrp ds-btn"><a class="ds-button ds-button-large ds-button-approve" data-icon="approve" data-role="button" data-bind="click: onApproveClick, visible: isAdmin">Approve</a></span>
-            <span class="ds-item-wrp ds-btn"><a class="ds-button ds-button-large ds-button-decline" data-icon="decline" data-role="button" data-bind="click: onDeclineClick, visible: isAdmin">Decline</a></span>
+    <div class="ds-detail-items">
+		<div class="ds-top-container">
+			<a class="ds-button ds-button-add" data-icon="camera" data-role="button" data-bind="click: onAddPhotoClick, invisible: Attachments">Add photo</a>
+        	<img class="ds-button-add" data-bind="visible: Attachments, attr: { src: Photo }"/> 
 		</div>
-    </div>
-
-    <div data-role="footer">
-        <div >
-            <div class="ds-navbar" data-role="navbar">
-            </div>
-        </div>
+		<div class="ds-detail-container" data-role="scroller">
+	        <span class="ds-item-wrp ds-item-right ds-item-has-icon"><span class="ds-title">Title</span><span class="ds-value ds-title-value" data-bind="text: Title"></span></span>
+	        <span class="ds-item-wrp"><span class="ds-title">Status</span><span class="ds-value ds-status" data-bind="text: Status, style: { color: StatusColor }"></span></span>
+	        <span class="ds-item-wrp"><span class="ds-title">Description</span><span class="ds-value ds-description" data-bind="text: Description"></span></span>
+	        <span class="ds-item-wrp"><span class="ds-title">Location</span><span class="ds-value ds-location" data-bind="text: Location"></span></span>
+	        <span class="ds-item-wrp"><span class="ds-title">Amount</span><span class="ds-value ds-amount" data-bind="text: Amount"></span></span>
+            <span class="ds-item-wrp ds-btn" data-bind="visible: isStatusRegistered">
+				<a class="ds-button ds-button-large ds-button-submit" data-icon="action" data-role="button" data-bind="click: onSubmitForApprovalClick">Submit for approval</a>
+            </span>
+            <span class="ds-item-wrp ds-btn" data-bind="visible: isAdmin">
+				<a class="ds-button ds-button-large ds-button-approve" data-icon="approve" data-role="button" data-bind="click: onApproveClick">Approve</a>
+            	<a class="ds-button ds-button-large ds-button-decline" data-icon="decline" data-role="button" data-bind="click: onDeclineClick">Decline</a>
+            </span>
+		</div>
     </div>
 </div>
