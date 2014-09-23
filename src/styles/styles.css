@@ -1,3 +1,8 @@
+/* Work around an issue in Kendo UI Mobile */
+body {
+    height: 100% !important;
+}
+
 /* Icons */
 .ds-icon:before {
     position: absolute;
@@ -435,7 +440,18 @@
 
 .km-ios7 .km-view .km-content .ds-button-add .km-icon
 {
-	margin-top: -0.3em;
+	margin-top: -.3em;
+}
+
+.km-ios7.km-horizontal .km-content .ds-button-add .km-icon,
+.km-ios7.km-horizontal .km-content .ds-button-add .km-text
+{
+    margin-top: -.6em;
+}
+
+.km-ios7.km-horizontal .km-content .ds-button-add .km-icon
+{
+	margin-top: -.9em;
 }
 
 .km-ios7 .km-view .km-content .ds-button-add

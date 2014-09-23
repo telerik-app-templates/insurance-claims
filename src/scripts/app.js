@@ -12,6 +12,11 @@
 		// Prevent browser native scroller
 		document.ontouchmove = function() { return false; }
         
+        kendo.onResize(function () {
+			$(".ds-add-items .ds-top-container:visible").height($(".ds-add-items").height() - $(".ds-add-items .ds-detail-container").height());
+			$(".ds-detail-items .ds-top-container:visible").height($(".ds-detail-items").outerHeight() - $(".ds-detail-items .ds-detail-container").height());
+        });
+        
         // initialize feedback
         //feedback.initialize('b0781da0-0808-11e4-a08e-bb4f9a025edb');
 
