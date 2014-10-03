@@ -94,14 +94,18 @@
         },
         
         _addclaimCompleted: function() {
-            app.common.showLoading("Upload in progress!");
-            app.sharepointService.attachPictureToListItem("Claims",claim.d.ID, that.imageData,function(){
-                app.common.hideLoading();
-                app.common.navigateToView(app.config.views.claims);
-            },function(e){
-                app.common.hideLoading();
-                alert(JSON.stringify(e));
-            });  
+            if(!this.imageData){
+                  app.common.navigateToView(app.config.views.claims); 
+            }else {                
+                app.common.showLoading("Upload in progress!");
+                app.sharepointService.attachPictureToListItem("Claims",claim.d.ID, that.imageData,function(){
+                    app.common.hideLoading();
+                    app.common.navigateToView(app.config.views.claims);
+                },function(e){
+                    app.common.hideLoading();
+                    alert(JSON.stringify(e));
+                });  
+            }
         }, 
 
 		_initModule: function () {

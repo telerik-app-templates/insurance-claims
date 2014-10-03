@@ -60,8 +60,8 @@
         },
 
         onLogin: function () {
-			this.set("username", "Administrator");
-			this.set("password", "Telerik34");
+			//this.set("username", "Administrator");
+			//this.set("password", "Telerik34");
             var that = this,
                 username = that.get("username").trim(),
                 password = that.get("password").trim();
@@ -72,9 +72,9 @@
             }
 
             that._onStart(that.consts.PROVIDER_DEFAULT);
-            var bytes = Crypto.charenc.Binary.stringToBytes(username + ":" + password);
+            var bytes = Crypto.charenc.Binary.stringToBytes(app.config.sharepoint.domainName + username + ":" + password);
             var userAuthHash = Crypto.util.bytesToBase64(bytes);
-            app.sharepointService.login(username, password, $.proxy(that._onLoginSuccess, that, userAuthHash), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
+            app.sharepointService.login(app.config.sharepoint.domainName + username, password, $.proxy(that._onLoginSuccess, that, userAuthHash), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
         },
   
         logout: function () {
