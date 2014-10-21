@@ -12,9 +12,11 @@
     
     app.config = {
          sharepoint: {
-             baseUrl: "http://sp-platformdemo/_api/",
-             domainName: "TELERIK\\",
-             userNamePrefix: "i:0#.w|TELERIK\\"
+             baseUrl: "https://sp-platformdemo.telerik.com/_api/",
+             domainName: "SP-PLATFORMDEMO\\",
+             userNamePrefix: "i:0#.w|SP-PLATFORMDEMO\\",
+             agentPass: "u$sv438iHw@s",
+             managerPass: "np#f3dcW9^sCW"
         },
         views: {
             init: "#init-view",

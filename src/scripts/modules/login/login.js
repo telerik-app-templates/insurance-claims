@@ -64,8 +64,16 @@
 			//this.set("password", "Telerik34");
             var that = this,
                 username = that.get("username").trim(),
-                password = that.get("password").trim();
-
+                password = that.get("password");
+            
+            if(username === "claimsagent" && !password){
+                this.set("password", app.config.sharepoint.agentPass);
+            }
+            else if (username === "claimsmanager" && !password){
+                this.set("password", app.config.sharepoint.managerPass);
+            }
+            
+            password = that.get("password"); 
             if (username === "" || password === "") {
                 app.common.notification(that.consts.MESSAGE_TITLE_SIGN_IN_ERROR, that.consts.MESSAGE_EMPTY_FIELD);
                 return;
