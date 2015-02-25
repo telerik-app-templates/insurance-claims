@@ -1,16 +1,21 @@
 (function (global) {
     var app = global.app = global.app || {};
-    
+
     app.consts = {
         status: {
             Registered: "Registered",
             Submitted: "Submitted",
             Approved: "Approved",
-            Declined: "Declined"            
+            Declined: "Declined"
         }
     };
-    
+
     app.config = {
+         rolebase : {
+            baseUrl : "https://www.rollbase.com/rest/api/",
+            agentPass  : "u$sv438iHw@s",
+            managerPass: "np#f3dcW9^sCW"
+         },
          sharepoint: {
              baseUrl: "https://sp-platformdemo.telerik.com/_api/",
              domainName: "SP-PLATFORMDEMO\\",

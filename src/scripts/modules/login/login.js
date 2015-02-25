@@ -65,15 +65,15 @@
             var that = this,
                 username = that.get("username").trim(),
                 password = that.get("password");
-            
+
             if(username === "claimsagent" && !password){
                 this.set("password", app.config.sharepoint.agentPass);
             }
             else if (username === "claimsmanager" && !password){
                 this.set("password", app.config.sharepoint.managerPass);
             }
-            
-            password = that.get("password"); 
+
+            password = that.get("password");
             if (username === "" || password === "") {
                 app.common.notification(that.consts.MESSAGE_TITLE_SIGN_IN_ERROR, that.consts.MESSAGE_EMPTY_FIELD);
                 return;
@@ -82,9 +82,11 @@
             that._onStart(that.consts.PROVIDER_DEFAULT);
             var bytes = Crypto.charenc.Binary.stringToBytes(app.config.sharepoint.domainName + username + ":" + password);
             var userAuthHash = Crypto.util.bytesToBase64(bytes);
-            app.sharepointService.login(app.config.sharepoint.domainName + username, password, $.proxy(that._onLoginSuccess, that, userAuthHash), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
+
+            app.rollbaseService.login(username, $.proxy(that._onLoginSuccess, that, data), $.proxy(that._onError, that, error));
+
         },
-  
+
         logout: function () {
             var that = this;
 
@@ -104,16 +106,16 @@
             app.common.hideLoading();
             that.set("displayName", that.get("username").trim());
             app.settingsService.setUserCredentials(that.get("username").trim(), that.get("password").trim(),userAuthHash, e.d.GetContextWebInformation.FormDigestValue);
-            
-            app.sharepointService.getUserId(that.get("username").trim(), $.proxy(that._onGetUserIdSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));                        
+
+            app.sharepointService.getUserId(that.get("username").trim(), $.proxy(that._onGetUserIdSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
         },
-        
+
         _onGetUserIdSuccess: function(data){
             var that = this;
-            var userId = data.d.Id;       
+            var userId = data.d.Id;
             app.sharepointService.getUserGroups(userId, $.proxy(that._onGetUserGroupSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
         },
-        
+
         _onGetUserGroupSuccess: function(data){
             app.settingsService.setCurrentUserGroup(data.d.results);
             app.common.navigateToView(app.config.views.claims);
