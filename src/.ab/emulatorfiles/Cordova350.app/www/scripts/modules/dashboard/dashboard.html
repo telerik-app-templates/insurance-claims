@@ -1,0 +1,31 @@
+<div id="dashboard-view"
+     class="view dashboard-view"
+     data-role="view"
+     data-layout="default"
+     data-stretch="true"
+     data-transition="overlay:up"
+     data-init="app.dashBoardService.initModule"
+     data-show="app.dashBoardService.showModule"
+     data-model="app.dashBoardService.viewModel"
+	 data-title="Dashboard">
+
+    <div data-role="header">
+        <div data-role="navbar">
+            <div data-role="view-title"></div>
+        </div>
+    </div>
+
+    <ul class="dashboard-items">
+        <li>
+            <a data-role="button" href="scripts/modules/claims/claims.html">
+                <span class="ds-item"> <span class="ds-icon ds-icon-bills"></span> <span class="ds-title" >claims</span> </span>
+            </a>
+        </li>
+        <li>
+            <a data-role="button" href="scripts/modules/claims/add-claim.html">
+                <span class="ds-item"> <span class="ds-icon ds-icon-bills"></span> <span class="ds-title" >Add claim</span> </span>
+            </a>
+        </li>
+    </ul>
+            
+</div> 

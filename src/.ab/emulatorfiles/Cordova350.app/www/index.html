@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>claims</title>
+        <meta charset="utf-8" />
+
+        <link href="lib/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="lib/kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+        <link href="styles/styles.css" rel="stylesheet" />
+
+        <script src="cordova.js"></script>
+        <script src="lib/kendo/js/jquery.min.js"></script>
+
+        <script src="lib/kendo/js/kendo.mobile.min.js"></script>
+        <script src="scripts/config.js"></script>
+        <script src="scripts/common.js"></script>
+        <script src="lib/date/date.js"></script>
+        <script src="scripts/app.js"></script>
+        <script src="https://crypto-js.googlecode.com/svn-history/r292/branches/2.0.x/src/Crypto.js"></script>
+        <script src="scripts/modules/sharepointService.js"></script>
+        <script src="scripts/modules/settings/settings.js"></script>
+        <script src="scripts/modules/login/identity-providers.js"></script>
+        <script src="scripts/modules/login/login.js"></script>
+        <script src="scripts/modules/claims/claims.js"></script>
+        <script src="scripts/modules/claims/claim-details.js"></script>
+        <script src="scripts/modules/claims/add-claim.js"></script>
+        <script src="scripts/modules/dashboard/dashboard.js"></script>
+
+    </head>
+
+    <body style="width: 100%; height: 100%;">
+        <div id="claims-view"
+             class="view claims-view"
+             data-role="view"
+             data-init="app.claimsService.initModule"
+             data-show="app.claimsService.showModule"
+             data-model="app.claimsService.viewModel"
+             data-layout="drawer-layout"
+             data-transition="overlay:left"
+			 data-title="Claims">
+
+            <div data-role="header">
+                <div data-role="navbar">
+                    <div data-role="view-title"></div>
+                    <a class="ds-header-button ds-header-add" data-icon="add" data-align="right" data-role="button" href="scripts/modules/claims/add-claim.html">Add Claim</a>
+                </div>
+            </div>
+            <div data-role="tabstrip">
+                <a href="scripts/modules/claims/claims.html?status=Registered">Registered</a>
+                <a href="scripts/modules/claims/claims.html?status=Submitted">Submitted</a>
+                <a href="scripts/modules/claims/claims.html?status=Approved">Approved</a>
+                <a href="scripts/modules/claims/claims.html?status=Declined">Declined</a>
+            </div>
+            <ul class="claims-items"
+                data-role="listview"
+                data-bind="source: claimsDataSource"
+                data-template="claims-template">
+            </ul>
+
+            <script id="claims-template" type="text/x-kendo-tmpl">
+            	<a class="cf" href="scripts/modules/claims/claim-details.html?dataId=#: ID #">
+                    <span class="ds-item-thumb" style="background-image: #: Photo #"></span>
+                	<span class="ds-item-content-wrp">
+                        <span class="ds-title">#: Title #</span>
+                        <span class="ds-value">#: Amount #</span>
+                    </span>
+            	</a>
+            </script>
+                
+        </div>
+                
+        <!--Layout-->
+        <div data-role="layout" data-id="drawer-layout">
+            <div data-role="header">
+                <div data-role="navbar">
+                    <span data-role="view-title">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+            
