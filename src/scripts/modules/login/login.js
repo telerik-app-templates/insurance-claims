@@ -83,7 +83,7 @@
             var bytes = Crypto.charenc.Binary.stringToBytes(app.config.sharepoint.domainName + username + ":" + password);
             var userAuthHash = Crypto.util.bytesToBase64(bytes);
 
-            app.rollbaseService.login(username, $.proxy(that._onLoginSuccess, that, data), $.proxy(that._onError, that, error));
+            app.rollbaseService.login(username, password, $.proxy(that._onLoginSuccess, that), $.proxy(that._onError, that));
 
         },
 
@@ -102,12 +102,12 @@
         },
 
         _onLoginSuccess: function (userAuthHash, e) {
-            var that = this;
-            app.common.hideLoading();
-            that.set("displayName", that.get("username").trim());
-            app.settingsService.setUserCredentials(that.get("username").trim(), that.get("password").trim(),userAuthHash, e.d.GetContextWebInformation.FormDigestValue);
+           // var that = this;
+            //app.common.hideLoading();
+            //that.set("displayName", that.get("username").trim());
+            //app.settingsService.setUserCredentials(that.get("username").trim(), that.get("password").trim(),userAuthHash, e.d.GetContextWebInformation.FormDigestValue);
 
-            app.sharepointService.getUserId(that.get("username").trim(), $.proxy(that._onGetUserIdSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
+           // app.sharepointService.getUserId(that.get("username").trim(), $.proxy(that._onGetUserIdSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
         },
 
         _onGetUserIdSuccess: function(data){

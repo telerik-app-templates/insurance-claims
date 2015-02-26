@@ -11,8 +11,13 @@
       //this._testAll();
     },
     login: function(username, password, success, error) {
-      var data = { "username" : username , "password" : password };
-      var method = '/login?' + $.param(data);
+       var data = { 
+          "loginName" : username , 
+          "password" : password,
+          "custId"   : app.config.rollbase.custId
+      };
+    
+      var method = 'login?' + $.param(data);
 
       $.get(app.config.rollbase.baseUrl + method , function(data){
           alert(data);
