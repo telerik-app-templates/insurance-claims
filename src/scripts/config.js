@@ -14,7 +14,9 @@
          rolebase : {
             baseUrl : "https://www.rollbase.com/rest/api/",
             agentPass  : "u$sv438iHw@s",
-            managerPass: "np#f3dcW9^sCW"
+            managerPass: "np#f3dcW9^sCW",
+            user : 'mhossain',
+            password : 'Ll72Wv44'
          },
          sharepoint: {
              baseUrl: "https://sp-platformdemo.telerik.com/_api/",
