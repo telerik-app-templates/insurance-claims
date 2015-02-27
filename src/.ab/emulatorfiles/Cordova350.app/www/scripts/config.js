@@ -11,12 +11,15 @@
     };
 
     app.config = {
-         rolebase : {
+         rollbase : {
             baseUrl : "https://www.rollbase.com/rest/api/",
             agentPass  : "u$sv438iHw@s",
             managerPass: "np#f3dcW9^sCW",
             user : 'mhossain',
-            password : 'Ll72Wv44'
+            password : 'Ll72Wv44',
+            custId : '123123189',
+            agentPass: "Kr83Dv72",
+            managerPass: "Tb55Yp50"
          },
          sharepoint: {
              baseUrl: "https://sp-platformdemo.telerik.com/_api/",
