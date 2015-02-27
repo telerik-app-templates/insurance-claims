@@ -43,9 +43,9 @@
             app.common.hideLoading();
         },
 
-        _onError: function (provider, e) {
+        _onError: function (e) {
             app.common.hideLoading();
-            app.common.notification("Error!", JSON.stringify(e));
+            app.common.notification("Error!", e.message);
         }
     });
 
@@ -113,7 +113,7 @@
         _onGetUserIdSuccess: function(data){
             var that = this;
             var userId = data.d.Id;
-            app.sharepointService.getUserGroups(userId, $.proxy(that._onGetUserGroupSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
+            app.sharepointService.getUserGroups(userId, $.proxy(that._onGetUserGroupSuccess, that), $.proxy(that._onError, that));
         },
 
         _onGetUserGroupSuccess: function(data){
