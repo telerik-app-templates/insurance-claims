@@ -5,7 +5,7 @@
   "AppIdentifier": "com.telerik.telstra",
   "DisplayName": "Claims Manager",
   "Author": "",
-  "Description": "",
+  "Description": "Claims Manager",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [

@@ -16,11 +16,10 @@
 
         init: function (item) {
             var that = this;
-
-            that.ID = item.ID;
-            that.Title = item.Title;
-            that.Status = item.Status;
-            that.Amount = item.Amount;
+            that.ID = item.id;
+            that.Title = item.name;
+            that.Status = item.status;
+            that.Amount = item.tl_Amount;
             that.Attachments = item.Attachments;
             kendo.data.ObservableObject.fn.init.apply(that, that);
         },
@@ -84,18 +83,16 @@
 
         getclaimsData: function () {
             var that = this;
-
-            app.sharepointService.getListItems("claims", $.proxy(that.storeclaims, that),$.proxy(that._onError, that, ""));
+            app.rollbaseService.getClaims($.proxy(that.storeclaims, that),$.proxy(that._onError, that));
         },
 
         storeclaims: function (data) {
             var that = this,
                 newclaim;
 
-            for (var i = 0; i < data.d.results.length; i++) {
-                newclaim = new claim(data.d.results[i]);
-                console.log(newclaim.Status);
-                console.log(that.status);
+            for (var i = 0; i < data.length; i++) {
+                newclaim = new claim(data[i]);
+               
                 if(newclaim.Status == that.status && newclaim.Attachments){
                     app.sharepointService.getAttachmentByListItemId ("Claims",newclaim.ID, $.proxy(that.setPhoto, that, newclaim),  $.proxy(that.onError, that));
                 }
@@ -118,9 +115,9 @@
             this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
         },
         
-         _onError: function (provider, e) {
+         _onError: function (e) {
             app.common.hideLoading();
-            app.common.notification("Error loading claims list", JSON.stringify(e));
+            app.common.notification("Error loading claims list", e.message);
         }     
     });
 

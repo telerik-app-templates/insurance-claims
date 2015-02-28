@@ -60,17 +60,15 @@
         },
 
         onLogin: function () {
-			//this.set("username", "Administrator");
-			//this.set("password", "Telerik34");
-            var that = this,
+		    var that = this,
                 username = that.get("username").trim(),
                 password = that.get("password");
 
             if(username === "claimsagent" && !password){
-                this.set("password", app.config.sharepoint.agentPass);
+                this.set("password", app.config.rollbase.agentPass);
             }
             else if (username === "claimsmanager" && !password){
-                this.set("password", app.config.sharepoint.managerPass);
+                this.set("password", app.config.rollbase.managerPass);
             }
 
             password = that.get("password");
@@ -101,23 +99,12 @@
             app.common.navigateToView(app.config.views.settingsStarting);
         },
 
-        _onLoginSuccess: function (userAuthHash, e) {
-           // var that = this;
-            //app.common.hideLoading();
-            //that.set("displayName", that.get("username").trim());
-            //app.settingsService.setUserCredentials(that.get("username").trim(), that.get("password").trim(),userAuthHash, e.d.GetContextWebInformation.FormDigestValue);
-
-           // app.sharepointService.getUserId(that.get("username").trim(), $.proxy(that._onGetUserIdSuccess, that), $.proxy(that._onError, that, that.consts.PROVIDER_DEFAULT));
-        },
-
-        _onGetUserIdSuccess: function(data){
+        _onLoginSuccess: function (e) {
+            console.log(e);
             var that = this;
-            var userId = data.d.Id;
-            app.sharepointService.getUserGroups(userId, $.proxy(that._onGetUserGroupSuccess, that), $.proxy(that._onError, that));
-        },
-
-        _onGetUserGroupSuccess: function(data){
-            app.settingsService.setCurrentUserGroup(data.d.results);
+            app.common.hideLoading();
+            that.set("displayName", that.get("username").trim());
+            app.settingsService.setUserCredentials(that.get("username").trim(), that.get("password").trim(),e.sessionId);
             app.common.navigateToView(app.config.views.claims);
         }
     });
