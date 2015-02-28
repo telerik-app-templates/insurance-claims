@@ -25,8 +25,8 @@
              baseUrl: "https://sp-platformdemo.telerik.com/_api/",
              domainName: "SP-PLATFORMDEMO\\",
              userNamePrefix: "i:0#.w|SP-PLATFORMDEMO\\",
-             agentPass: "u$sv438iHw@s",
-             managerPass: "np#f3dcW9^sCW"
+             agentPass: "Tb55Yp50",
+             managerPass: "Kr83Dv72"
         },
         views: {
             init: "#init-view",

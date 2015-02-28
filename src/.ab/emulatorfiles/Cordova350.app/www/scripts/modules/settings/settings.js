@@ -24,8 +24,7 @@
         consts: {
             localStorageKeyUsername: "claimsUsername",
             localStorageKeyPassword: "claimsPassword",
-            localStorageUserAuthHash: "userAuthHash",
-            localStorageUserFormDigestValue: "formDigestValue"
+            localStorageKeySessionId : "sessionId"
         },
         
 		init: function () {
@@ -48,8 +47,7 @@
             that.viewModel.$view = $(that.viewModel.viewId);
             that.viewModel.set("loggedIn", that.isLogged() !== null);
         },
-        
-        
+       
         _bindToEvents: function() {
             var that = this;
             
@@ -60,11 +58,10 @@
            app.loginService.signInViewModel.logout(); 
         },
         
-        setUserCredentials: function(username, password,userAuthHash, formDigestValue) {
-            localStorage.setItem(this.consts.localStorageUserFormDigestValue, formDigestValue);
-            localStorage.setItem(this.consts.localStorageUserAuthHash, userAuthHash);
+        setUserCredentials: function(username, password, sessionId) {
             localStorage.setItem(this.consts.localStorageKeyUsername, username);
             localStorage.setItem(this.consts.localStorageKeyPassword, password);
+            localStorage.setItem(this.consts.localStorageKeySessionId, sessionId);
         },    
         
         setCurrentUserGroup: function(groups){
@@ -76,8 +73,8 @@
             }
         },
         
-        getUserHash: function(){
-        	return localStorage.getItem("userAuthHash");    
+        getSessionId: function(){
+        	return localStorage.getItem(this.consts.localStorageKeySessionId);    
         },
         
         setUserHash: function(userAuthHash){
@@ -85,7 +82,7 @@
         },
         
         isLogged: function() {
-        	return localStorage.getItem("formDigestValue");
+        	return localStorage.getItem(this.consts.localStorageKeySessionId);
         },
         
         isAdmin: function(){

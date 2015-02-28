@@ -16,12 +16,11 @@
 
         init: function (item) {
             var that = this;
-
-            that.ID = item.ID;
-            that.Title = item.Title;
-            that.Status = item.Status;
-            that.Amount = item.Amount;
-            that.Attachments = item.Attachments;
+            that.ID = item.id;
+            that.Title = item.name;
+            that.Status = item.status;
+            that.Amount = item.tl_Amount;
+            //that.Attachments = item.Attachments;
             kendo.data.ObservableObject.fn.init.apply(that, that);
         },
     });
@@ -84,24 +83,20 @@
 
         getclaimsData: function () {
             var that = this;
-
-            app.sharepointService.getListItems("claims", $.proxy(that.storeclaims, that),$.proxy(that._onError, that, ""));
+            app.rollbaseService.getClaims($.proxy(that.storeclaims, that),$.proxy(that._onError, that));
         },
 
         storeclaims: function (data) {
             var that = this,
                 newclaim;
 
-            for (var i = 0; i < data.d.results.length; i++) {
-                newclaim = new claim(data.d.results[i]);
-                console.log(newclaim.Status);
-                console.log(that.status);
-                if(newclaim.Status == that.status && newclaim.Attachments){
-                    app.sharepointService.getAttachmentByListItemId ("Claims",newclaim.ID, $.proxy(that.setPhoto, that, newclaim),  $.proxy(that.onError, that));
+            for (var i = 0; i < data.length; i++) {
+                newclaim = new claim(data[i]);
+               
+                if(newclaim.Status == that.status){
+                    app.rollbaseService.getClaimById(newclaim.ID, $.proxy(that.setPhoto, that),  $.proxy(that.onError, that));
                 }
-                else{
-                    this.viewModel.get("claims").push(newclaim);
-                }
+                this.viewModel.get("claims").push(newclaim);
             }
             
             that.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
@@ -109,18 +104,34 @@
             app.common.hideLoading();
         },
         
-        setPhoto : function(claim, blob){
-            var url = window.URL || window.webkitURL;
-            var imgSrc = url.createObjectURL(blob);
-            
-            claim.Photo = "url(" + imgSrc + ")";
-            this.viewModel.get("claims").push(claim);
-            this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
+        setPhoto : function(claim){
+            if (claim.composite.length){
+                //var url = window.URL || window.webkitURL;
+               // var blob = new Blob([atob(claim.composite[0].tl_Data)], {type: 'image/png'})
+                                                 
+                //var reader2 = new FileReader();
+                
+                //reader2.readAsBinaryString(blob);
+                
+                //var imgSrc = url.createObjectURL(reader2);
+                
+                
+                claim.Photo = "url('data:image/png;base64," + claim.composite[0].tl_Data + "')";
+                
+                this.viewModel.get("claims").push(claim);
+                this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));                
+            }
         },
         
-         _onError: function (provider, e) {
+         _onError: function (e) {
             app.common.hideLoading();
-            app.common.notification("Error loading claims list", JSON.stringify(e));
+            
+            if (e.status === "login"){
+               app.common.navigateToView(app.config.views.signIn);
+            } 
+            else{ 
+                app.common.notification("Error loading claims list", e.message);
+            }
         }     
     });
 

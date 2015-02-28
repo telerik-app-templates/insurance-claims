@@ -1,39 +1,42 @@
-
-
 (function (global) {
   var app = global.app = global.app || {};
   RollbaseService = function() {
   };
   RollbaseService.prototype = {
     init: function () {
-    // init
-      //console.log('Testing all...');
-      //this._testAll();
-    },
+    
+    }, 
     login: function(username, password, success, error) {
-       var data = { 
+      var data = { 
           "loginName" : username , 
           "password" : password,
           "custId"   : app.config.rollbase.custId,
            "output"  : "json"
       };
-    
-      var method = 'login?' + $.param(data);
-
-      $.get(app.config.rollbase.baseUrl + method , function(data){
-          if (data.status === "ok"){
-             success(data);
-          }
-      })
-      .fail(function(err){
-          error(JSON.parse(err.responseText));
-      });
+        
+      this._getCall("login", data, success, error);
     },
-
-    getListItems: function(listName, success, error) {
+      
+    getClaims: function(success, error) {
+      var data = { 
+          "objName"  : "tl_claims",
+          "sessionId": app.settingsService.getSessionId(),
+          "viewId" : "123733537",
+          "output"   : "json"
+      };
+      this._getCall("getPage", data, success, error);
     },
-
-    getListItemById: function(listname, id, success, error) {
+      
+    getClaimById:function(claimId, success, error){
+      var data = { 
+          "objName"  : "tl_claims",
+          "sessionId": app.settingsService.getSessionId(),
+          "composite" : "3",
+          "id": claimId,
+          "output": "json"
+      };
+        
+      this._getCall("getRecord", data, success, error);
     },
 
     updateListItem: function(listname, etag, id, data, success, error) {
@@ -41,7 +44,16 @@
 
     createListItem: function(listname, data, success, error) {
     },
-
+      
+    _getCall: function(method, data, success, error){
+        var url = app.config.rollbase.baseUrl + method + '?' + $.param(data);
+        $.get(url, function(data){
+            success(data);
+        }).fail(function(err){
+            error(JSON.parse(err.responseText));
+        });                 
+    },
+      
     copy: function (buffer) {
 
     },
