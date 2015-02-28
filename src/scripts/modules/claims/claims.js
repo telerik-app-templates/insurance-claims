@@ -106,18 +106,18 @@
         
         setPhoto : function(claim){
             if (claim.composite.length){
-                var url = window.URL || window.webkitURL;
-                var blob = new Blob([atob(claim.composite[0].tl_Data)], {type: 'image/png'})
+                //var url = window.URL || window.webkitURL;
+               // var blob = new Blob([atob(claim.composite[0].tl_Data)], {type: 'image/png'})
                                                  
-                var reader2 = new FileReader();
+                //var reader2 = new FileReader();
                 
-                reader2.readAsBinaryString(blob);
+                //reader2.readAsBinaryString(blob);
                 
-                var imgSrc = url.createObjectURL(reader2);
+                //var imgSrc = url.createObjectURL(reader2);
                 
                 
-                claim.Photo = "url(" + imgSrc + ")";
- 
+                claim.Photo = "url('data:image/png;base64," + claim.composite[0].tl_Data + "')";
+                
                 this.viewModel.get("claims").push(claim);
                 this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));                
             }
