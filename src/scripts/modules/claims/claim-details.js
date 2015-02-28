@@ -102,29 +102,29 @@
 
             that.viewModel.set("ID", dataId);  
 
-            app.sharepointService.getListItemById("Claims",dataId,  $.proxy(that.setData, that),  $.proxy(that.onError, that));
+            app.rollbaseService.getClaimById(dataId,  $.proxy(that.setData, that),  $.proxy(that.onError, that));
              
             that.viewModel.$view = $(that.viewModel.viewId);
         },
 
 		setData: function (claimData) {
-			var that = this,
-                claimData = claimData.d;
-
-            that.viewModel.set("Title", claimData.Title);
-            that.viewModel.set("Description", claimData.Description);
-            that.viewModel.set("Status", claimData.Status);
-            that.viewModel.set("Location", claimData.Location);
-            that.viewModel.set("Amount", claimData.Amount);
-			
-            that.viewModel.set("Etag", claimData.__metadata.etag);
-            that.viewModel.set("Uri", claimData.__metadata.uri);
+			var that = this;
             
-            if(claimData.Status == app.consts.status.Registered){
+            that.viewModel.set("Title", claimData.name);
+            that.viewModel.set("Description", 'Description goes here');
+            that.viewModel.set("Status", claimData.status);
+            
+            navigator.geolocation.getCurrentPosition(function(position) {
+                that.viewModel.set("Location", "169 Universty Ave");
+            });
+           
+            that.viewModel.set("Amount", claimData.tl_Amount);
+		    
+            if(claimData.status == app.consts.status.Registered){
                 that.viewModel.set("isStatusRegistered", true);    
                 that.viewModel.set("isAdmin", false);
             }
-            else if(claimData.Status == app.consts.status.Submitted && app.settingsService.isAdmin()){
+            else if(claimData.status == app.consts.status.Submitted && app.settingsService.isAdmin()){
                 that.viewModel.set("isStatusRegistered", false);    
                 that.viewModel.set("isAdmin", true);
             }

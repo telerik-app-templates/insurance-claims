@@ -26,8 +26,17 @@
       };
       this._getCall("getPage", data, success, error);
     },
-
-    getListItemById: function(listname, id, success, error) {
+      
+    getClaimById:function(claimId, success, error){
+      var data = { 
+          "objName"  : "tl_claims",
+          "sessionId": app.settingsService.getSessionId(),
+          "composite" : "3",
+          "id": claimId,
+          "output": "json"
+      };
+        
+      this._getCall("getRecord", data, success, error);
     },
 
     updateListItem: function(listname, etag, id, data, success, error) {
@@ -38,11 +47,8 @@
       
     _getCall: function(method, data, success, error){
         var url = app.config.rollbase.baseUrl + method + '?' + $.param(data);
-        
         $.get(url, function(data){
-             if (data.length || data.status === 'ok'){
-                 success(data);
-             }   
+            success(data);
         }).fail(function(err){
             error(JSON.parse(err.responseText));
         });                 

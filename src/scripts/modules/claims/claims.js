@@ -20,7 +20,7 @@
             that.Title = item.name;
             that.Status = item.status;
             that.Amount = item.tl_Amount;
-            that.Attachments = item.Attachments;
+            //that.Attachments = item.Attachments;
             kendo.data.ObservableObject.fn.init.apply(that, that);
         },
     });
@@ -93,12 +93,10 @@
             for (var i = 0; i < data.length; i++) {
                 newclaim = new claim(data[i]);
                
-                if(newclaim.Status == that.status && newclaim.Attachments){
-                    app.sharepointService.getAttachmentByListItemId ("Claims",newclaim.ID, $.proxy(that.setPhoto, that, newclaim),  $.proxy(that.onError, that));
+                if(newclaim.Status == that.status){
+                    app.rollbaseService.getClaimById(newclaim.ID, $.proxy(that.setPhoto, that),  $.proxy(that.onError, that));
                 }
-                else{
-                    this.viewModel.get("claims").push(newclaim);
-                }
+                this.viewModel.get("claims").push(newclaim);
             }
             
             that.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
@@ -106,18 +104,34 @@
             app.common.hideLoading();
         },
         
-        setPhoto : function(claim, blob){
-            var url = window.URL || window.webkitURL;
-            var imgSrc = url.createObjectURL(blob);
-            
-            claim.Photo = "url(" + imgSrc + ")";
-            this.viewModel.get("claims").push(claim);
-            this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
+        setPhoto : function(claim){
+            if (claim.composite.length){
+                var url = window.URL || window.webkitURL;
+                var blob = new Blob([atob(claim.composite[0].tl_Data)], {type: 'image/png'})
+                                                 
+                var reader2 = new FileReader();
+                
+                reader2.readAsBinaryString(blob);
+                
+                var imgSrc = url.createObjectURL(reader2);
+                
+                
+                claim.Photo = "url(" + imgSrc + ")";
+ 
+                this.viewModel.get("claims").push(claim);
+                this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));                
+            }
         },
         
          _onError: function (e) {
             app.common.hideLoading();
-            app.common.notification("Error loading claims list", e.message);
+            
+            if (e.status === "login"){
+               app.common.navigateToView(app.config.views.signIn);
+            } 
+            else{ 
+                app.common.notification("Error loading claims list", e.message);
+            }
         }     
     });
 
