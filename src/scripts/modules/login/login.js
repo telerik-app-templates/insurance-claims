@@ -100,7 +100,6 @@
         },
 
         _onLoginSuccess: function (e) {
-            console.log(e);
             var that = this;
             app.common.hideLoading();
             that.set("displayName", that.get("username").trim());

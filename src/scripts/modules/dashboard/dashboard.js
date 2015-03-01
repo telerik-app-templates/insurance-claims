@@ -12,11 +12,15 @@
         
         init: function () {
 			var that = this;
-			app.sharepointService.init();//zz
+            
+            app.settingsService.logout(); 
+		
+			//app.sharepointService.init();//zz
 			that.viewModel = new DashBoardViewModel();
 			that.initModule = $.proxy(that._initModule, that);
             that.showModule = $.proxy(that._showModule, that);
-		},
+            
+       },
         
         _initModule: function () {
 		},

@@ -64,7 +64,7 @@
 
         _showModule: function (e) {
              if(!app.settingsService.isLogged()) {
-            	app.common.navigateToView(app.config.views.signIn);
+              app.common.navigateToView(app.config.views.signIn);
                 return;
             }
             
@@ -89,12 +89,24 @@
         storeclaims: function (data) {
             var that = this,
                 newclaim;
-
+            
+            var url = window.URL || window.webkitURL;
+                       
             for (var i = 0; i < data.length; i++) {
                 newclaim = new claim(data[i]);
                
                 if(newclaim.Status == that.status){
-                    app.rollbaseService.getClaimById(newclaim.ID, $.proxy(that.setPhoto, that),  $.proxy(that.onError, that));
+                    if (data[i].composite){
+                        for (var claim_index = 0; claim_index < data[i].composite.length; claim_index++){
+                            var composite = data[i].composite[claim_index];
+                             
+                            if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
+                                 var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
+                                 var imgSrc = url.createObjectURL(blob);
+                                 newclaim.Photo = "url(" + imgSrc + ")";
+                            }
+                        }
+                    }
                 }
                 this.viewModel.get("claims").push(newclaim);
             }
@@ -104,23 +116,8 @@
             app.common.hideLoading();
         },
         
-        setPhoto : function(claim){
-            if (claim.composite.length){
-                //var url = window.URL || window.webkitURL;
-               // var blob = new Blob([atob(claim.composite[0].tl_Data)], {type: 'image/png'})
-                                                 
-                //var reader2 = new FileReader();
-                
-                //reader2.readAsBinaryString(blob);
-                
-                //var imgSrc = url.createObjectURL(reader2);
-                
-                
-                claim.Photo = "url('data:image/png;base64," + claim.composite[0].tl_Data + "')";
-                
-                this.viewModel.get("claims").push(claim);
-                this.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));                
-            }
+        setPhoto : function(composite){
+            // nothing here saved a call.
         },
         
          _onError: function (e) {

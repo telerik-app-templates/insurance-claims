@@ -73,7 +73,7 @@
             }
             
             app.common.showLoading();
-            app.sharepointService.createListItem("claims",newclaim,  $.proxy(that._addclaimCompleted, that), $.proxy(that._onError, that, ""));
+            app.rollbaseService.createNewClaim(newclaim,  $.proxy(that._addclaimCompleted, that), $.proxy(that._onError, that));
         },
         
         
@@ -88,9 +88,9 @@
             app.common.notification("Error", JSON.stringify(message));
         },
         
-         _onError: function (provider, e) {
+         _onError: function (e) {
             app.common.hideLoading();
-            app.common.notification("Error while adding claim", JSON.stringify(e));
+            app.common.notification("Error while adding claim", e.message);
         },
         
         _addclaimCompleted: function() {

@@ -108,15 +108,11 @@
         },
 
 		setData: function (claimData) {
-			var that = this;
+            var that = this;
             
             that.viewModel.set("Title", claimData.name);
-            that.viewModel.set("Description", 'Description goes here');
+            that.viewModel.set("Description", claimData.tl_Descrption);
             that.viewModel.set("Status", claimData.status);
-            
-            navigator.geolocation.getCurrentPosition(function(position) {
-                that.viewModel.set("Location", "169 Universty Ave");
-            });
            
             that.viewModel.set("Amount", claimData.tl_Amount);
 		    
@@ -132,36 +128,37 @@
                 that.viewModel.set("isStatusRegistered", false);    
                 that.viewModel.set("isAdmin", false);
             }
-            that.viewModel.set("Attachments", claimData.Attachments);
+            that.viewModel.set("Attachments", claimData.composite);
             that.viewModel.set("StatusColor", colors[claimData.Status]);
-            if(!claimData.Attachments){
-    			app.common.hideLoading();                 
+            
+            if (claimData.composite){
+                 for (var claim_index = 0; claim_index < claimData.composite.length; claim_index++){
+                    var composite = claimData.composite[claim_index];
+
+                    if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
+                         that.setPhoto(composite);
+                    }
+                    else if (composite.objName.indexOf("location") >= 0){
+                       that.viewModel.set("Location", composite.name);
+                    }
+                 }
             }
-            else {
-                app.sharepointService.getAttachmentByListItemId ("Claims",claimData.ID, $.proxy(that.setPhoto, that),  $.proxy(that.onError, that));
-            }
-			
+            
 			$(".ds-detail-items .ds-top-container").height($(".ds-detail-items").outerHeight() - $(".ds-detail-items .ds-detail-container").height());
 		},
-        setPhoto : function(blob){
+        setPhoto : function(composite){
+            var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
             var url = window.URL || window.webkitURL;
             var imgSrc = url.createObjectURL(blob);
-           
+            
             this.viewModel.set("Photo", imgSrc);
             app.common.hideLoading(); 
         },
         
         onChangeClaimStatus: function(status) {
-            console.log(status);
             var that = this;
             app.common.showLoading("Approval proceeding. This might take a couple of minutes");
-            
-            var updateClaim = {
-                "Status": status,
-                "__metadata": { 'type': 'SP.Data.ClaimsListItem' }
-            }
-            
-            app.sharepointService.updateListItem ("Claims",  that.viewModel.get("Etag"),that.viewModel.get("ID"), updateClaim, $.proxy(that.claimApproved, that), that.onError)
+            app.rollbaseService.updateClaim (that.viewModel.get("ID"), status, $.proxy(that.claimApproved, that), that.onError)
         },
         
         onCapturePhoto: function() {
@@ -189,9 +186,8 @@
         },
 
 		onError: function (e) {
-			console.log(JSON.stringify(e));
-            app.common.hideLoading();
-			app.common.notification("Error", JSON.stringify(e));
+		    app.common.hideLoading();
+			app.common.notification("Error", e.message);
 		}
 	});
 
