@@ -58,6 +58,7 @@
         //analytics.Start();
         
         //app.analytics = analytics;
+         
     }, false);
     
 })(window);

@@ -11,7 +11,10 @@
     };
 
     app.config = {
-         rollbase : {
+        maps :{
+            apiKey  : "AIzaSyDgljyjLhGjL4F6HL__7QL9JvXk1euzIz0"
+        },
+        rollbase : {
             baseUrl : "https://www.rollbase.com/rest/api/",
             agentPass  : "u$sv438iHw@s",
             managerPass: "np#f3dcW9^sCW",

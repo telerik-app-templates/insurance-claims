@@ -41,6 +41,9 @@
             
 			that.initModule = $.proxy(that._initModule, that);
             that.showModule = $.proxy(that._showModule, that);
+            
+            navigator.geolocation.getCurrentPosition($.proxy(that.positionChanged, that), that.positionChangeError);
+
 		},
         
         _bindToEvents: function() {
@@ -110,9 +113,27 @@
 
 		_initModule: function () {
 			var that = this;
-
             that._bindToEvents();
 		},
+        
+        positionChanged : function(position){
+            var that = this;
+            
+            if (google){
+                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                     new google.maps.Geocoder().geocode({'latLng':latLng}, function(results, status){
+                        if (results && results.length){
+                            if (results[1].formatted_address){
+                                that.viewModel.set("Location", results[1].formatted_address);
+                            }
+                        } 
+                    });
+            }
+        },
+        
+        positionChangeError : function(error){
+          console.log(JSON.stringify(error));  
+        },
         
         _showModule: function(e) {
             var that = this;
