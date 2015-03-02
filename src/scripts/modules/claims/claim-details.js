@@ -138,11 +138,12 @@
                     if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
                          that.setPhoto(composite);
                     }
-                    else if (composite.objName.indexOf("location") >= 0){
-                       that.viewModel.set("Location", composite.name);
-                    }
                  }
+            }else{
+                 app.common.hideLoading(); 
             }
+            
+            that.viewModel.set("Location", claimData.streetAddr1);
             
 			$(".ds-detail-items .ds-top-container").height($(".ds-detail-items").outerHeight() - $(".ds-detail-items .ds-detail-container").height());
 		},
@@ -164,9 +165,8 @@
         onCapturePhoto: function() {
             var that = this;
             navigator.camera.getPicture(function(imageData){
-                
                 app.common.showLoading("Upload in progress!");
-                app.sharepointService.attachPictureToListItem ("Claims",that.viewModel.get("ID"), imageData,function(){
+                app.rollbaseService.attachPhoto(that.viewModel.get("ID"), imageData,function(){
                     app.common.hideLoading();
                     that._showModule({ view: that.view } );
                 },function(e){

@@ -44,19 +44,41 @@
       var newClaim = {
           objName       : 'tl_claims',
           sessionId     : app.settingsService.getSessionId(),
-          tl_amount     : data.Amount,
+          name          : data.Title,
+          tl_Amount     : data.Amount,
           tl_Descrption : data.Description,
           status        : data.Status,
+          city          : data.City,
           streetAddr1   : data.Address,
-          zip           : data.zip,
-          country       :data.country 
+          zip           : data.Zip,
+          country       : data.Country 
       }
 
       this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
     },
     
-    copy: function (buffer) {
+    attachPhoto: function (claimId, imageURI, success, error) {
+       var that = this;
+    
+        window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+            fileEntry.file(function(file) { 
+                var reader = new FileReader();
 
+                reader.onloadend = function(e) {
+                    var attachment = {
+                      objName       : 'attachment14',
+                      sessionId     : app.settingsService.getSessionId(),
+                      contentType   : "Image",
+                      R123755107    : claimId,
+                      tl_Data       : e.target.result
+                   };
+                   this._ajaxCall('POST', 'createRecord', attachment, success, error); 
+                };
+
+                reader.readAsArrayBuffer(file);
+            });
+        });
+   
     },
 
     updateClaim: function(id, status, success, error) {

@@ -43,7 +43,6 @@
             that.showModule = $.proxy(that._showModule, that);
             
             navigator.geolocation.getCurrentPosition($.proxy(that.positionChanged, that), that.positionChangeError);
-
 		},
         
         _bindToEvents: function() {
@@ -65,17 +64,34 @@
         },
         
         _onAddclaim: function() {
-            var that = this,
-
-            var address = that.viewModel.get('Location').split(',');
+            var that = this;
+            var country, zip, city;
             
-            newclaim = {
+            var address = JSON.parse(that.viewModel.get('Address'));
+            
+            for(var index = 0; index < address.length; index++){
+                var component = address[index];
+                
+                if (component.types[0] === "locality" && !city)
+                    city = component.short_name;
+                
+                if (component.types[0] === "postal_code" && !zip)
+                    zip = component.short_name;
+                
+                if (component.types[0] === "country" && !country)
+                    country = component.short_name;
+            }
+                      
+            var newclaim = {
                 "Title": that.viewModel.get("Title"),
                 "Description": that.viewModel.get("Description"),
-                "Location": that.viewModel.get("Location"),
+                "Address": that.viewModel.get('Location') ,
+                "Zip": zip,
+                "Country" : country,
+                "City": city,
                 "Amount": that.viewModel.get("Amount"),
                 "Status": app.consts.status.Registered,
-            }
+            };
             
             app.common.showLoading();
             app.rollbaseService.createNewClaim(newclaim,  $.proxy(that._addclaimCompleted, that), $.proxy(that._onError, that));
@@ -98,17 +114,18 @@
             app.common.notification("Error while adding claim", e.message);
         },
         
-        _addclaimCompleted: function() {
+        _addclaimCompleted: function(claim) {
+            var that = this;
             if(!this.imageData){
                   app.common.navigateToView(app.config.views.claims); 
             }else {                
                 app.common.showLoading("Upload in progress!");
-                app.sharepointService.attachPictureToListItem("Claims",claim.d.ID, that.imageData,function(){
+                app.rollbaseService.attachPhoto(claim.id, that.imageData, function(){
                     app.common.hideLoading();
                     app.common.navigateToView(app.config.views.claims);
                 },function(e){
                     app.common.hideLoading();
-                    alert(JSON.stringify(e));
+                    alert(e.message);
                 });  
             }
         }, 
@@ -125,8 +142,11 @@
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                      new google.maps.Geocoder().geocode({'latLng':latLng}, function(results, status){
                         if (results && results.length){
-                            if (results[1].formatted_address){
-                                that.viewModel.set("Location", results[1].formatted_address);
+                            if (results[0].formatted_address){
+                                that.viewModel.set("Location", results[0].formatted_address);
+                            }
+                            if (results[0].address_components){
+                                that.viewModel.set("Address", JSON.stringify(results[0].address_components));
                             }
                         } 
                     });
