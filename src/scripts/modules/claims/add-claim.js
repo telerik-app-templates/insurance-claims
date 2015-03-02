@@ -66,13 +66,15 @@
         
         _onAddclaim: function() {
             var that = this,
+
+            var address = that.viewModel.get('Location').split(',');
+            
             newclaim = {
                 "Title": that.viewModel.get("Title"),
                 "Description": that.viewModel.get("Description"),
                 "Location": that.viewModel.get("Location"),
                 "Amount": that.viewModel.get("Amount"),
                 "Status": app.consts.status.Registered,
-                "__metadata": { 'type': 'SP.Data.ClaimsListItem' }
             }
             
             app.common.showLoading();
