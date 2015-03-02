@@ -41,13 +41,25 @@
     },
   
     createNewClaim: function(data, success, error) {
-    
+      var newClaim = {
+          objName       : 'tl_claims',
+          sessionId     : app.settingsService.getSessionId(),
+          tl_amount     : data.Amount,
+          tl_Descrption : data.Description,
+          status        : data.Status,
+          streetAddr1   : data.Address,
+          zip           : data.zip,
+          country       :data.country 
+      }
+
+      this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
     },
     
     copy: function (buffer) {
+
     },
 
-      updateClaim: function(id, status, success, error) {
+    updateClaim: function(id, status, success, error) {
        var data = { 
           "objName"  : "tl_claims",
           "sessionId": app.settingsService.getSessionId(),
