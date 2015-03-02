@@ -68,14 +68,6 @@
             }
         }
         
-        // hack for CORS
-        if (type === 'PUT'){
-             options.type = 'POST';
-             options.beforeSend = function(xhr) {
-                xhr.setRequestHeader('X-HTTP-Method-Override', 'PUT');
-             }
-        }
-        
         $.ajax(options).fail(function(err){
             error(JSON.parse(err.responseText));
         });                 

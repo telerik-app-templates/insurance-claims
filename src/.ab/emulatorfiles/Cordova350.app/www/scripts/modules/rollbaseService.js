@@ -14,7 +14,7 @@
            "output"  : "json"
       };
         
-      this._getCall("login", data, success, error);
+      this._ajaxCall("POST","login", data, success, error);
     },
       
     getClaims: function(success, error) {
@@ -22,55 +22,55 @@
           "objName"  : "tl_claims",
           "sessionId": app.settingsService.getSessionId(),
           "viewId" : "123733537",
-          "output"   : "json"
+          "output"   : "json",
+          "composite": "1"
       };
-      this._getCall("getPage", data, success, error);
+      this._ajaxCall("GET", "getPage", data, success, error);
     },
       
     getClaimById:function(claimId, success, error){
       var data = { 
           "objName"  : "tl_claims",
           "sessionId": app.settingsService.getSessionId(),
-          "composite" : "3",
+          "composite" : "1",
           "id": claimId,
           "output": "json"
       };
         
-      this._getCall("getRecord", data, success, error);
+      this._ajaxCall("GET","getRecord", data, success, error);
+    },
+  
+    createNewClaim: function(data, success, error) {
+    
+    },
+    
+    copy: function (buffer) {
     },
 
-    updateListItem: function(listname, etag, id, data, success, error) {
+      updateClaim: function(id, status, success, error) {
+       var data = { 
+          "objName"  : "tl_claims",
+          "sessionId": app.settingsService.getSessionId(),
+          "useIds" : "false",
+          "id": id,
+          "status":status,
+          "output": "json"
+      };
+      this._ajaxCall("PUT","updateRecord", data, success, error);
     },
-
-    createListItem: function(listname, data, success, error) {
-    },
-      
-    _getCall: function(method, data, success, error){
-        var url = app.config.rollbase.baseUrl + method + '?' + $.param(data);
-        $.get(url, function(data){
-            success(data);
-        }).fail(function(err){
+   
+    _ajaxCall: function(type, method, data, success, error){
+        var options = {
+            url :app.config.rollbase.baseUrl + method + '?' + $.param(data),
+            type : type,
+            success : function(data){
+              success(data);   
+            }
+        }
+        
+        $.ajax(options).fail(function(err){
             error(JSON.parse(err.responseText));
         });                 
-    },
-      
-    copy: function (buffer) {
-
-    },
-
-    attachPictureToListItem: function(listname, id , imageURI, success, error) {
-    },
-
-    getAttachmentByListItemId: function(listname, id, success, error) {
-
-    },
-
-    getUserId: function(userName, success, error) {
-
-    },
-
-    getUserGroups: function(userId, success, error) {
-
     }
   };
   app.rollbaseService = new RollbaseService();
