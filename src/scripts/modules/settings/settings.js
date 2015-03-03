@@ -100,6 +100,9 @@
          	localStorage.clear();   
         },
         b64toBlob: function(b64Data, contentType, sliceSize) {
+            
+            console.log(b64Data);
+            
             contentType = contentType || '';
             sliceSize = sliceSize || 512;
 

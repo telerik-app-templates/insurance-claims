@@ -136,7 +136,12 @@
                     var composite = claimData.composite[claim_index];
 
                     if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
-                         that.setPhoto(composite);
+                        if (composite.tl_Data){
+                             that.setPhoto(composite);
+                        }
+                        else{
+                            app.common.hideLoading();
+                        }
                     }
                  }
             }else{
@@ -166,7 +171,7 @@
             var that = this;
             navigator.camera.getPicture(function(imageData){
                 app.common.showLoading("Upload in progress!");
-                app.rollbaseService.attachPhoto(that.viewModel.get("ID"), imageData,function(){
+                app.rollbaseService.attachPhoto(that.viewModel.get("ID"), imageData,function(attachment){
                     app.common.hideLoading();
                     that._showModule({ view: that.view } );
                 },function(e){

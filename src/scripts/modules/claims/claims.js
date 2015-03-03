@@ -99,18 +99,18 @@
                     if (data[i].composite){
                         for (var claim_index = 0; claim_index < data[i].composite.length; claim_index++){
                             var composite = data[i].composite[claim_index];
-                             
                             if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
-                                 var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
-                                 var imgSrc = url.createObjectURL(blob);
-                                 newclaim.Photo = "url(" + imgSrc + ")";
+                                 if (composite.tl_Data){
+                                     var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
+                                     var imgSrc = url.createObjectURL(blob);
+                                     newclaim.Photo = "url(" + imgSrc + ")";
+                                 }
                             }
                         }
                     }
                 }
                 this.viewModel.get("claims").push(newclaim);
             }
-            
             that.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
             that.viewModel.get("claimsDataSource").filter({ field: "Status",value: that.status, operator: "startswith" });
             app.common.hideLoading();

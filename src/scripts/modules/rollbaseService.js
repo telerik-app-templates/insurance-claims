@@ -57,28 +57,29 @@
       this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
     },
     
-    attachPhoto: function (claimId, imageURI, success, error) {
+    attachPhoto: function (claimId, url, success, error) {
        var that = this;
-    
-        window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+       
+        window.resolveLocalFileSystemURI(url, function(fileEntry) {
             fileEntry.file(function(file) { 
                 var reader = new FileReader();
-
-                reader.onloadend = function(e) {
+                reader.onloadend = function(e){ 
+                    var uint = String.fromCharCode.apply(null, new Uint8Array(e.target.result));
+                    var base64String = btoa(uint);
+                    
                     var attachment = {
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
                       contentType   : "Image",
-                      R123755107    : claimId,
-                      tl_Data       : e.target.result
-                   };
-                   this._ajaxCall('POST', 'createRecord', attachment, success, error); 
+                      R123755107    : claimId
+                    };
+                    that._ajaxCall('POST', 'createRecord', attachment, success, error, base64String); 
                 };
-
+                 
                 reader.readAsArrayBuffer(file);
+               
             });
         });
-   
     },
 
     updateClaim: function(id, status, success, error) {
@@ -93,13 +94,17 @@
       this._ajaxCall("PUT","updateRecord", data, success, error);
     },
    
-    _ajaxCall: function(type, method, data, success, error){
+    _ajaxCall: function(type, method, data, success, error, attachment){
         var options = {
             url :app.config.rollbase.baseUrl + method + '?' + $.param(data),
             type : type,
             success : function(data){
               success(data);   
             }
+        }
+        
+        if (attachment){
+            options.data = attachment;
         }
         
         $.ajax(options).fail(function(err){
