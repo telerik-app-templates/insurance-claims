@@ -71,9 +71,10 @@
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
                       contentType   : "Image",
-                      R123755107    : claimId
+                      R123755107    : claimId,
+                      tl_Data       : e.target.result
                     };
-                    that._ajaxCall('POST', 'createRecord', attachment, success, error, base64String); 
+                    that._ajaxCall('POST', 'createRecord', attachment, success, error, 'multipart/form-data'); 
                 };
                  
                 reader.readAsArrayBuffer(file);
@@ -94,7 +95,7 @@
       this._ajaxCall("PUT","updateRecord", data, success, error);
     },
    
-    _ajaxCall: function(type, method, data, success, error, attachment){
+    _ajaxCall: function(type, method, data, success, error, contentType){
         var options = {
             url :app.config.rollbase.baseUrl + method + '?' + $.param(data),
             type : type,
@@ -103,8 +104,8 @@
             }
         }
         
-        if (attachment){
-            options.data = attachment;
+        if (contentType){
+          options.contentType = contentType;
         }
         
         $.ajax(options).fail(function(err){
