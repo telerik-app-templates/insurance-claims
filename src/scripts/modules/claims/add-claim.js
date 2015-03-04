@@ -114,13 +114,13 @@
             app.common.notification("Error while adding claim", e.message);
         },
         
-        _addclaimCompleted: function(claim) {
+        _addclaimCompleted: function(data) {
             var that = this;
             if(!this.imageData){
                   app.common.navigateToView(app.config.views.claims); 
             }else {                
                 app.common.showLoading("Upload in progress!");
-                app.rollbaseService.attachPhoto(claim.id, that.imageData, function(){
+                app.rollbaseService.attachPhoto(data.id, that.imageData, function(){
                     app.common.hideLoading();
                     app.common.navigateToView(app.config.views.claims);
                 },function(e){

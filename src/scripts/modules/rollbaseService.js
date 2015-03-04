@@ -51,7 +51,8 @@
           city          : data.City,
           streetAddr1   : data.Address,
           zip           : data.Zip,
-          country       : data.Country 
+          country       : data.Country,
+          output        : "json"
       }
 
       this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
@@ -59,7 +60,7 @@
     
     attachPhoto: function (claimId, url, success, error) {
        var that = this;
-       
+        
         window.resolveLocalFileSystemURI(url, function(fileEntry) {
             fileEntry.file(function(file) { 
                 var reader = new FileReader();
@@ -67,18 +68,31 @@
                     var uint = String.fromCharCode.apply(null, new Uint8Array(e.target.result));
                     var base64String = btoa(uint);
                     
-                    var attachment = {
+                    var data = {
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
                       contentType   : "Image",
                       R123755107    : claimId,
-                      tl_Data       : e.target.result
+                      tl_Data       : base64String
                     };
-                    that._ajaxCall('POST', 'createRecord', attachment, success, error, 'multipart/form-data'); 
-                };
-                 
+                   
+                    var options = {
+                        url :app.config.rollbase.baseUrl + 'createRecord',
+                        type : 'POST',
+                        data : data,
+                        success : function(data){
+                          success(data);   
+                        },
+                        headers :{
+                            'Content-Type' : 'application/x-www-form-urlencoded'
+                        }
+                    };
+                   
+                    $.ajax(options).fail(function(err){
+                        error(JSON.parse(err.responseText));
+                    }); 
+                }
                 reader.readAsArrayBuffer(file);
-               
             });
         });
     },
@@ -95,17 +109,13 @@
       this._ajaxCall("PUT","updateRecord", data, success, error);
     },
    
-    _ajaxCall: function(type, method, data, success, error, contentType){
+    _ajaxCall: function(type, method, data, success, error){
         var options = {
             url :app.config.rollbase.baseUrl + method + '?' + $.param(data),
             type : type,
             success : function(data){
               success(data);   
             }
-        }
-        
-        if (contentType){
-          options.contentType = contentType;
         }
         
         $.ajax(options).fail(function(err){
