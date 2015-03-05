@@ -72,25 +72,40 @@
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
                       contentType   : "Image",
-                      R123755107    : claimId,
-                      tl_Data       : base64String
+                      R123755107    : claimId
                     };
-                   
-                    var options = {
-                        url :app.config.rollbase.baseUrl + 'createRecord',
-                        type : 'POST',
-                        data : data,
-                        success : function(data){
-                          success(data);   
-                        },
-                        headers :{
-                            'Content-Type' : 'application/x-www-form-urlencoded'
-                        }
-                    };
-                   
-                    $.ajax(options).fail(function(err){
-                        error(JSON.parse(err.responseText));
-                    }); 
+
+                    this._ajaxCall('POST', 'createRecord', data, function(data){
+
+                      var attachment = {
+                        objName       : 'attachment14',
+                        sessionId     : app.settingsService.getSessionId(),
+                        contentType   : "image/png",
+                        id            : data.id,
+                        fieldName     : 'image',
+                        value         :  base64String,
+                        fileName      : data.id
+                      };
+
+                      var options = {
+                          url :app.config.rollbase.baseUrl + 'setDataField',
+                          type : 'POST',
+                          data : attachment,
+                          success: function(data){   
+                             success(data);
+                          },
+                          headers :{
+                              'Content-Type' : 'application/x-www-form-urlencoded'
+                          }
+                      };
+                     
+                      $.ajax(options).fail(function(err){
+                          error(JSON.parse(err.responseText));
+                      }); 
+
+                    }, function(err){
+                         error(JSON.parse(err.responseText));
+                    });
                 }
                 reader.readAsArrayBuffer(file);
             });

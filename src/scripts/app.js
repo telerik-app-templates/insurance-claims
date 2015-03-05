@@ -3,7 +3,7 @@
     
     document.addEventListener("deviceready", function () {
         navigator.splashscreen.hide();
-
+        
         new kendo.mobile.Application(document.body, {
             platform: "ios7",
             loading: "<h1></h1>"
