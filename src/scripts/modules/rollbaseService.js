@@ -58,7 +58,7 @@
       this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
     },
     
-    attachPhoto: function (claimId, url, completed, error) {
+    attachPhoto: function (claimId, url, success, error) {
        var that = this;
         
         window.resolveLocalFileSystemURI(url, function(fileEntry) {
@@ -71,29 +71,58 @@
                     var data = {
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
+                      contentType   : "Image",
                       R123755107    : claimId,
-                      output        : 'json',
-                      contentType   : 'Image',
-                      tl_Data : base64String
+                      output        : 'json'
                     };
-                    
-                     var options = {
-                          url :app.config.rollbase.baseUrl + 'createRecord',
-                          type : 'POST',
-                          data : data,
-                          success: completed,
-                          headers :{
+
+                    that._ajaxCall('POST', 'createRecord', data, function(data){
+
+                      var attachment = {
+                        objName       : 'attachment14',
+                        sessionId     : app.settingsService.getSessionId(),
+                        contentType   : "image/png",
+                        id            : data.id,
+                        fieldName     : 'Image',
+                        value         :  base64String,
+                        fileName      : 'img_' + data.id + '.png',
+                        output        : 'json'
+                      
+                      };
+
+                      var options = {
+                          url :app.config.rollbase.baseUrl + 'setDataField',
+                           headers :{
                               'Content-Type' : 'application/x-www-form-urlencoded'
-                          }
+                          },
+                          type : 'POST',
+                          data : attachment,
+                          success: success
                       };
                      
                       $.ajax(options).fail(function(err){
                           error(JSON.parse(err.responseText));
                       }); 
-                };
+
+                    }, function(err){
+                         error(JSON.parse(err.responseText));
+                    });
+                }
                 reader.readAsArrayBuffer(file);
             });
         });
+    },
+      
+    getImageUrl: function(id, success, error){
+       var that = this;
+        
+       var data = {
+           sessionId : app.settingsService.getSessionId(),
+           objName   : 'attachment14',
+           id        : id,
+           fieldName : 'Image'
+       } ;
+       return app.config.rollbase.baseUrl +  'getBinaryData?' + $.param(data);
     },
 
     updateClaim: function(id, status, success, error) {

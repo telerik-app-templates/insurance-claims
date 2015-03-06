@@ -19,7 +19,8 @@
             that.ID = item.id;
             that.Title = item.name;
             that.Status = item.status;
-            that.Amount = item.tl_Amount;
+            that.Amount = item.tl_Amount
+            that.Composite = item.composite;
             //that.Attachments = item.Attachments;
             kendo.data.ObservableObject.fn.init.apply(that, that);
         },
@@ -87,37 +88,45 @@
         },
 
         storeclaims: function (data) {
-            var that = this,
-                newclaim;
-            
-            var url = window.URL || window.webkitURL;
-                       
+            var that = this
+            var count = 1;
             for (var i = 0; i < data.length; i++) {
-                newclaim = new claim(data[i]);
-               
-                if(newclaim.Status == that.status){
-                    if (data[i].composite){
-                        for (var claim_index = 0; claim_index < data[i].composite.length; claim_index++){
-                            var composite = data[i].composite[claim_index];
-                            if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
-                                 if (composite.tl_Data){
-                                     var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
-                                     var imgSrc = url.createObjectURL(blob);
-                                     newclaim.Photo = "url(" + imgSrc + ")";
-                                 }
-                            }
-                        }
-                    }
+                if(data[i].status == that.status){
+                   that.processClaim(new claim(data[i]), function(){
+                     
+                   });
                 }
-                this.viewModel.get("claims").push(newclaim);
             }
-            that.viewModel.get("claimsDataSource").data(this.viewModel.get("claims"));
-            that.viewModel.get("claimsDataSource").filter({ field: "Status",value: that.status, operator: "startswith" });
-            app.common.hideLoading();
+             that.viewModel.get("claimsDataSource").data(that.viewModel.get("claims"));
+             that.viewModel.get("claimsDataSource").filter({ field: "Status",value: that.status, operator: "startswith" });
+             app.common.hideLoading();
         },
         
-        setPhoto : function(composite){
-            // nothing here saved a call.
+        processClaim : function(claim, cb){
+              var that = this;
+              if (claim.Composite){
+                    for (var claim_index = 0; claim_index < claim.Composite.length; claim_index++){
+                        var composite = claim.Composite[claim_index];
+
+                        if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
+                                claim.Photo = "url(" + app.rollbaseService.getImageUrl(composite.id) + ")";
+                        }
+                    }
+               }
+               that.viewModel.get("claims").push(claim); 
+               cb(); 
+        },
+        
+        setPhoto : function(id, success){
+            var url = window.URL || window.webkitURL;
+            
+            var that = this;
+            app.rollbaseService.getPhoto(id, function(imageData){
+                var image = app.settingsService.base64Encode(imageData);
+                var blob = app.settingsService.b64toBlob(image, 'Image');
+                var imgSrc = url.createObjectURL(blob);
+                success(imgSrc);
+            }, that._onError);
         },
         
          _onError: function (e) {

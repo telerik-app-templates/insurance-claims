@@ -136,12 +136,8 @@
                     var composite = claimData.composite[claim_index];
 
                     if (composite.contentType && composite.contentType.toLowerCase().indexOf('image') >= 0){
-                        if (composite.tl_Data){
-                             that.setPhoto(composite);
-                        }
-                        else{
-                            app.common.hideLoading();
-                        }
+                        that.viewModel.set("Photo",  app.rollbaseService.getImageUrl(composite.id));
+                        app.common.hideLoading();
                     }
                  }
             }else{
@@ -152,14 +148,6 @@
             
 			$(".ds-detail-items .ds-top-container").height($(".ds-detail-items").outerHeight() - $(".ds-detail-items .ds-detail-container").height());
 		},
-        setPhoto : function(composite){
-            var blob = app.settingsService.b64toBlob(composite.tl_Data, composite.contentType);
-            var url = window.URL || window.webkitURL;
-            var imgSrc = url.createObjectURL(blob);
-            
-            this.viewModel.set("Photo", imgSrc);
-            app.common.hideLoading(); 
-        },
         
         onChangeClaimStatus: function(status) {
             var that = this;
