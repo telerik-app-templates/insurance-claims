@@ -41,9 +41,7 @@
             
 			that.initModule = $.proxy(that._initModule, that);
             that.showModule = $.proxy(that._showModule, that);
-            
-            navigator.geolocation.getCurrentPosition($.proxy(that.positionChanged, that), that.positionChangeError);
-		},
+       },
         
         _bindToEvents: function() {
             var that = this
@@ -116,7 +114,7 @@
         
         _addclaimCompleted: function(data) {
             var that = this;
-            if(!this.imageData){
+            if(!that.imageData){
                   app.common.navigateToView(app.config.views.claims); 
             }else {                
                 app.common.showLoading("Upload in progress!");
@@ -159,8 +157,8 @@
         
         _showModule: function(e) {
             var that = this;
-            
             that.viewModel.$view = $(that.viewModel.viewId);
+            navigator.geolocation.getCurrentPosition($.proxy(that.positionChanged, that), that.positionChangeError);
         },
         
         adjustDimensions: function() {

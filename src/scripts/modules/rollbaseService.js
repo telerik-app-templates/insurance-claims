@@ -71,26 +71,16 @@
                     var data = {
                       objName       : 'attachment14',
                       sessionId     : app.settingsService.getSessionId(),
-                      contentType   : "Image",
-                      R123755107    : claimId
+                      R123755107    : claimId,
+                      output        : 'json',
+                      contentType   : 'Image',
+                      tl_Data : base64String
                     };
-
-                    this._ajaxCall('POST', 'createRecord', data, function(data){
-
-                      var attachment = {
-                        objName       : 'attachment14',
-                        sessionId     : app.settingsService.getSessionId(),
-                        contentType   : "image/png",
-                        id            : data.id,
-                        fieldName     : 'image',
-                        value         :  base64String,
-                        fileName      : data.id
-                      };
-
-                      var options = {
-                          url :app.config.rollbase.baseUrl + 'setDataField',
+                    
+                       var options = {
+                          url :app.config.rollbase.baseUrl + 'createRecord',
                           type : 'POST',
-                          data : attachment,
+                          data : data,
                           success: function(data){   
                              success(data);
                           },
@@ -102,10 +92,6 @@
                       $.ajax(options).fail(function(err){
                           error(JSON.parse(err.responseText));
                       }); 
-
-                    }, function(err){
-                         error(JSON.parse(err.responseText));
-                    });
                 }
                 reader.readAsArrayBuffer(file);
             });
