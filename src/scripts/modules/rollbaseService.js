@@ -58,7 +58,7 @@
       this._ajaxCall('POST', 'createRecord', newClaim, success, error); 
     },
     
-    attachPhoto: function (claimId, url, success, error) {
+    attachPhoto: function (claimId, url, completed, error) {
        var that = this;
         
         window.resolveLocalFileSystemURI(url, function(fileEntry) {
@@ -77,13 +77,11 @@
                       tl_Data : base64String
                     };
                     
-                       var options = {
+                     var options = {
                           url :app.config.rollbase.baseUrl + 'createRecord',
                           type : 'POST',
                           data : data,
-                          success: function(data){   
-                             success(data);
-                          },
+                          success: completed,
                           headers :{
                               'Content-Type' : 'application/x-www-form-urlencoded'
                           }
@@ -92,7 +90,7 @@
                       $.ajax(options).fail(function(err){
                           error(JSON.parse(err.responseText));
                       }); 
-                }
+                };
                 reader.readAsArrayBuffer(file);
             });
         });
