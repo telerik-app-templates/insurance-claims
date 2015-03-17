@@ -138,11 +138,16 @@
     },
    
     _ajaxCall: function(type, method, data, success, error){
+        var rollbaseUrl = app.config.rollbase.baseUrl + method + '?' + $.param(data);
+        
+        var proxy = 'https://platform.telerik.com/bs-api/v1/X7AydmbmdnQDlB5c/Functions/Rollbase?url='
+        var url = proxy + escape(rollbaseUrl) + '&method=' + type;
+        
         var options = {
-            url :app.config.rollbase.baseUrl + method + '?' + $.param(data),
-            type : type,
-            success : function(data){
-              success(data);   
+            url : url,
+            contentType: 'application/json',
+            success : function(rsp){
+              success(JSON.parse(rsp.body));   
             }
         }
         
