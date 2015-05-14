@@ -83,6 +83,7 @@
             var newclaim = {
                 "Title": that.viewModel.get("Title"),
                 "Description": that.viewModel.get("Description"),
+                "Policy":  that.viewModel.get("Policy"),
                 "Address": that.viewModel.get('Location') ,
                 "Zip": zip,
                 "Country" : country,

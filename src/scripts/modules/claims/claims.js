@@ -17,7 +17,7 @@
         init: function (item) {
             var that = this;
             that.ID = item.id;
-            that.Title = item.name;
+            that.Title = item.name.split('|')[0];
             that.Status = item.status;
             that.Amount = item.tl_Amount
             that.Composite = item.composite;

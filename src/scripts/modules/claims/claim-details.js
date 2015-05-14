@@ -12,6 +12,7 @@
         ID: "",
         Title: "",
         parentClass: "",
+        Policy: "",
         innerClass: "",
         color: "",
         viewId: "#bill-details-view",
@@ -110,7 +111,14 @@
 		setData: function (claimData) {
             var that = this;
             
-            that.viewModel.set("Title", claimData.name);
+            that.viewModel.set("Title", claimData.name.split('|')[0]);
+            
+            if (claimData.name.split('|').length > 1){
+            	that.viewModel.set("Policy", claimData.name.split('|')[1]);
+            }else{
+            	that.viewModel.set("Policy", "---");
+            }
+            
             that.viewModel.set("Description", claimData.tl_Descrption);
             that.viewModel.set("Status", claimData.status);
            

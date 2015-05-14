@@ -44,7 +44,7 @@
       var newClaim = {
           objName       : 'tl_claims',
           sessionId     : app.settingsService.getSessionId(),
-          name          : data.Title,
+          name          : data.Title + "|" + data.Policy,
           tl_Amount     : data.Amount,
           tl_Descrption : data.Description,
           status        : data.Status,
