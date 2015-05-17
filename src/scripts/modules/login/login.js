@@ -53,6 +53,8 @@
         isLoggedIn: false,
         displayName: "",
         viewId: "#signin-view",
+        username: "",
+        password: "",
 
         consts: {
             MESSAGE_TITLE_SIGN_IN_ERROR: "Sign In Error",
