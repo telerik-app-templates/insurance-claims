@@ -116,6 +116,10 @@
         
         _addclaimCompleted: function(data) {
             var that = this;
+            
+            console.log(data);
+            console.log(that);
+            
             if(!that.imageData){
                   app.common.navigateToView(app.config.views.claims); 
             }else {                

@@ -60,11 +60,18 @@
     
     attachPhoto: function (claimId, url, success, error) {
        var that = this;
-        
+        console.log("hit attachPhoto");
         window.resolveLocalFileSystemURI(url, function(fileEntry) {
+            console.log("fileEntry");
+            console.log(fileEntry);
             fileEntry.file(function(file) { 
+                console.log("file");
+                console.log(file);
                 var reader = new FileReader();
                 reader.onloadend = function(e){ 
+                    console.log("readed.onloadend");
+                    console.log(e);
+                    return;
                     var uint = String.fromCharCode.apply(null, new Uint8Array(e.target.result));
                     var base64String = btoa(uint);
                     
