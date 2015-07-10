@@ -140,7 +140,8 @@
     _ajaxCall: function(type, method, data, success, error){
         var rollbaseUrl = app.config.rollbase.baseUrl + method + '?' + $.param(data);
         
-        var proxy = 'https://platform.telerik.com/bs-api/v1/X7AydmbmdnQDlB5c/Functions/Rollbase?url='
+        //var proxy = 'https://platform.telerik.com/bs-api/v1/X7AydmbmdnQDlB5c/Functions/Rollbase?url='
+        var proxy = 'https://platform.telerik.com/bs-api/v1/9GcKUOMZRiVc2FgJ/Functions/Rollbase?url=';
         var url = proxy + escape(rollbaseUrl) + '&method=' + type;
         
         var options = {
